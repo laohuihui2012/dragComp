@@ -4,14 +4,13 @@ function resolve(dir) {
     return path.join(__dirname, dir)
 }
 
-
-const isProduction = process.env.NODE_ENV === 'production'
+// const isProduction = process.env.NODE_ENV === 'production'
  
 module.exports = {
     publicPath: process.env.VUE_APP_PUBLICPATH,
     outputDir: process.env.VUE_APP_OUTPUT,
     // lintOnSave: false, // 关闭eslint
-    productionSourceMap: isProduction ? false : true,
+    productionSourceMap: false,
     // 调整 webpack 配置，configureWebpack 提供的对象会被 webpack-merge 合并入最终的 webpack 配置
     configureWebpack:config => {
     //    const plugins = [
@@ -32,23 +31,24 @@ module.exports = {
 
     },
     chainWebpack: config => {
-    config.resolve.alias
-        .set('@', resolve('./src'))
-        .set('@api', resolve('./src/api'))
-        .set('@com', resolve('./src/components'))
-        .set('@styles', resolve('./src/styles'))
-        .set('@pages', resolve('./src/pages'))
+        config.resolve.alias
+            .set('@', resolve('./src'))
+            .set('@api', resolve('./src/api'))
+            .set('@com', resolve('./src/components'))
+            .set('@styles', resolve('./src/styles'))
+            .set('@pages', resolve('./src/pages'))
+            .set('@locale', resolve('./src/locale'))
 
-    // 链式操作添加loader
-    config.module
-      .rule('graphql')
-      .test(/\.graphql$/)  //文件路径
-      .use('graphql-tag/loader')
-        .loader('graphql-tag/loader')
-        .end()
-      .use('other-loader')
-        .loader('other-loader')
-        .end()
+        // 链式操作添加loader
+        config.module
+        .rule('graphql')
+        .test(/\.graphql$/)  //文件路径
+        .use('graphql-tag/loader')
+            .loader('graphql-tag/loader')
+            .end()
+        .use('other-loader')
+            .loader('other-loader')
+            .end()
 
         // webpack 会默认给commonChunk打进chunk-vendors，所以需要对webpack的配置进行delete
         config.optimization.delete('splitChunks')

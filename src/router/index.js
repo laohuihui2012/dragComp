@@ -6,6 +6,7 @@ const routes = []
 function autoLoadRoutes() {
     const filemodules = require.context('./modules', true, /\.js$/)
     filemodules.keys().forEach( file => {
+        console.log(filemodules(file))
         routes.push(filemodules(file).default)
     });
 

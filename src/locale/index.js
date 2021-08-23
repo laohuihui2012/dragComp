@@ -4,15 +4,18 @@ import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
 
 const i18nList = {
-    'en-US': [],
-    'zh-CN': [],
+    'en-US': {},
+    'zh-CN': {},
 }
 // 自动加载国际化文件
 function autoLoadRoutes() {
-    const filemodules = require.context('../locale', true, /\.json$/)
+    const filemodules = require.context('@/locale', true, /\.json$/)
     filemodules.keys().forEach( filePatch => {
+        console.log(filePatch)
         filePatch = filePatch.replace(/^\.\/(.*)\.\w+$/,"$1")
+        console.log(filePatch)
         const value = filemodules(filePatch)
+        console.log(value)
         const keyValue = filePatch.splite('/')
         console.log(keyValue,value)
         i18nList[keyValue[0]] = Object.assign(keyValue[0],{
